@@ -1,3 +1,5 @@
 Release/
 __vm/
 .vs/
+NeoPixel_lantern.vcxproj
+NeoPixel_lantern.vcxproj.filters
