@@ -8,9 +8,10 @@ V4 = Random Candle Effect
 V5 = Yellow Candle Effect
 V10 = OFF
 V11 = Reset
-V15 = COOLING
-V16 = SPARKING
-V18 = FRAMES_PER_SECOND
+V15 = COOLING (slider) 20-100
+V16 = SPARKING (slider) 50-200
+V17 = BRIGHTNESS (slider) 0-255
+V18 = FRAMES_PER_SECOND (slider) 0-255
 V20 = Terminal Widget
 V21 = UpTime
 V22 = WiFi Signal Strength
@@ -34,7 +35,7 @@ V22 = WiFi Signal Strength
 #define CHIPSET     WS2812
 #define NUM_LEDS    24
 
-#define BRIGHTNESS	200
+int BRIGHTNESS = 200;
 int FRAMES_PER_SECOND = 60;
 
 #define HOSTNAME "NeoPixel_lanten"
@@ -348,4 +349,12 @@ BLYNK_WRITE(V18)
 	terminal.print("FRAMES_PER_SECOND: ");
 	terminal.println(FRAMES_PER_SECOND);
 	terminal.flush();
+}
+
+BLYNK_WRITE(V17)
+{
+  BRIGHTNESS = param.asInt();
+  terminal.print("BRIGHTNESS: ");
+  terminal.println(BRIGHTNESS);
+  terminal.flush();
 }
