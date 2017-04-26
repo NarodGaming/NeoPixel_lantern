@@ -30,15 +30,15 @@ V22 = WiFi Signal Strength
 #include <Ticker.h>
 #include <SimpleTimer.h>
 
-#define LED_PIN     D3
-#define COLOR_ORDER GRB
-#define CHIPSET     WS2812
-#define NUM_LEDS    24
+#define LED_PIN     D3 // using pin D3 for lights, change this if it doesn't apply to you
+#define COLOR_ORDER GRB // colour order, R = Red, G = Green, B = Blue
+#define CHIPSET     WS2812 // chipset used
+#define NUM_LEDS    24 // number of LEDs
 
-int BRIGHTNESS = 200;
-int FRAMES_PER_SECOND = 60;
+int BRIGHTNESS = 200; // brightness, is a custom slider operated on V17, this is a default.
+int FRAMES_PER_SECOND = 60; // FPS, updates per second operated on V18, this is a default.
 
-#define HOSTNAME "NeoPixel_lanten"
+#define HOSTNAME "NeoPixel_Lantern" // hostname for the AP point if not connected to any WiFi
 
 //WS2812 Direction
 bool gReverseDirection = false;
@@ -77,12 +77,14 @@ SimpleTimer timer;
 bool shouldSaveConfig = false;
 //static bool BLYNK_ENABLED = true;
 
-WidgetTerminal terminal(V20);
+WidgetTerminal terminal(V20); // initalises terminal on V20
 
 int trigger;
 
 void setup() {
   Serial.begin(115200);
+
+  // gPal = CRGBPalette16(CRGB::Black, CRGB::Navy, CRGB::DeepSkyBlue, CRGB::LightBlue);
 
   Serial.print(F("Heap: ")); Serial.println(system_get_free_heap_size());
   Serial.print(F("Boot Vers: ")); Serial.println(system_get_boot_version());
@@ -175,12 +177,13 @@ void setup() {
   Serial.print("Setup Finished !!!");
   Serial.println();
 
+  gPal = CRGBPalette16(CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black);
+
   timer.setTimeout(100, updateui);
   timer.setInterval(1000, sendUptime);
 }
 
-void loop()
-{
+void loop() {
 	Blynk.run(); // Initiates SimpleTimer
 	timer.run(); // Initiates SimpleTimer
 	startthefire();
@@ -327,7 +330,7 @@ BLYNK_WRITE(V11) { //Reset Values
 	}
 }
 
-BLYNK_WRITE(V15)
+BLYNK_WRITE(V15) // COOLING
 {
 	COOLING = param.asInt();
 	terminal.print("COOLING: ");
@@ -335,7 +338,7 @@ BLYNK_WRITE(V15)
 	terminal.flush();
 }
 
-BLYNK_WRITE(V16)
+BLYNK_WRITE(V16) // SPARKING
 {
 	SPARKING = param.asInt();
 	terminal.print("SPARKING: ");
@@ -343,7 +346,7 @@ BLYNK_WRITE(V16)
 	terminal.flush();
 }
 
-BLYNK_WRITE(V18)
+BLYNK_WRITE(V18) // 60 is default, and multiples of this are recommended (30, 60, 120, 240) -- (FRAMES PER SECOND aka how fast it updates)
 {
 	FRAMES_PER_SECOND = param.asInt();
 	terminal.print("FRAMES_PER_SECOND: ");
@@ -351,7 +354,7 @@ BLYNK_WRITE(V18)
 	terminal.flush();
 }
 
-BLYNK_WRITE(V17)
+BLYNK_WRITE(V17) // despite the values being from 0-255, this setting actually does very little that is visible. (BRIGHTNESS)
 {
   BRIGHTNESS = param.asInt();
   terminal.print("BRIGHTNESS: ");
